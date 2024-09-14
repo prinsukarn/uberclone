@@ -16,6 +16,7 @@ const MapScreen = () => {
       </View>
       <View style={tw`h-1/2`}>
         <Stack.Navigator>
+          {/* Ask for user destination */}
           <Stack.Screen
             name="NavigateCard"
             component={NavigateCard}
