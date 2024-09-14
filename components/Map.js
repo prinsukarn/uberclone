@@ -3,11 +3,13 @@ import { View, Text, ActivityIndicator } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import tw from "tailwind-react-native-classnames";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectOrigin } from "../slices/navSlice";
+import { setDestination, setOrigin } from "../slices/navSlice";
 
 const Map = () => {
   const origin = useSelector(selectOrigin);
+  const dispatch = useDispatch();
   const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -49,15 +51,24 @@ const Map = () => {
       }
     : currentLocation;
 
-  // Show loading spinner until the map region is available or location access is denied
-  if (loading) {
-    return (
-      <View style={[tw`flex-1 justify-center items-center`]}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading map...</Text>
-      </View>
-    );
-  }
+  if (
+    !origin?.location &&
+    dispatch(
+      setOrigin({
+        location: details.geometry.location,
+        description: data.description,
+      })
+    )
+  )
+    if (loading) {
+      // Show loading spinner until the map region is available or location access is denied
+      return (
+        <View style={[tw`flex-1 justify-center items-center`]}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text>Loading map...</Text>
+        </View>
+      );
+    }
 
   if (errorMsg) {
     return <Text>{errorMsg}</Text>;
