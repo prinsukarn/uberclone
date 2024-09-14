@@ -41,7 +41,6 @@ const HomeScreen = () => {
                 description: data.description,
               })
             );
-
             dispatch(setDestination(null));
           }}
           // search when return key pressed on keyboard
