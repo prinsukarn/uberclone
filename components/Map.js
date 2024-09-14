@@ -13,65 +13,73 @@ const Map = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if origin is available; if not, request live location
-    if (!origin?.location) {
-      (async () => {
-        // Request permission for location
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-          setLoading(false); // Stop loading even if permission is denied
-          return;
-        }
+  //   useEffect(() => {
+  //     // Check if origin is available; if not, request live location
+  //     if (!origin?.location) {
+  //       (async () => {
+  //         // Request permission for location
+  //         let { status } = await Location.requestForegroundPermissionsAsync();
+  //         if (status !== "granted") {
+  //           setErrorMsg("Permission to access location was denied");
+  //           setLoading(false); // Stop loading even if permission is denied
+  //           return;
+  //         }
 
-        // Fetch the user's current position
-        let location = await Location.getCurrentPositionAsync({});
-        setCurrentLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        });
-        setLoading(false); // Stop loading after getting location
-      })();
-    } else {
-      setLoading(false); // No need to load if origin exists
-    }
-  }, [origin]);
+  //         // Fetch the user's current position
+  //         let location = await Location.getCurrentPositionAsync({});
+  //         setCurrentLocation({
+  //           latitude: location.coords.latitude,
+  //           longitude: location.coords.longitude,
+  //           latitudeDelta: 0.005,
+  //           longitudeDelta: 0.005,
+  //         });
+  //         setLoading(false); // Stop loading after getting location
+  //       })();
+  //     } else {
+  //       setLoading(false); // No need to load if origin exists
+  //     }
+  //   }, [origin]);
 
-  // Determine region based on whether origin is available or fallback to live location
-  const region = origin?.location
-    ? {
-        latitude: origin.location.lat,
-        longitude: origin.location.lng,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }
-    : currentLocation;
+  //   // Determine region based on whether origin is available or fallback to live location
+  //   const region = origin?.location
+  //     ? {
+  //         latitude: origin.location.lat,
+  //         longitude: origin.location.lng,
+  //         latitudeDelta: 0.005,
+  //         longitudeDelta: 0.005,
+  //       }
+  //     : currentLocation;
 
-  if (
-    !origin?.location &&
-    dispatch(
-      setOrigin({
-        location: details.geometry.location,
-        description: data.description,
-      })
-    )
-  )
-    if (loading) {
-      // Show loading spinner until the map region is available or location access is denied
-      return (
-        <View style={[tw`flex-1 justify-center items-center`]}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text>Loading map...</Text>
-        </View>
-      );
-    }
+  //   if (
+  //     !origin?.location &&
+  //     dispatch(
+  //       setOrigin({
+  //         location: details.geometry.location,
+  //         description: data.description,
+  //       })
+  //     )
+  //   )
+  //     if (loading) {
+  //       // Show loading spinner until the map region is available or location access is denied
+  //       return (
+  //         <View style={[tw`flex-1 justify-center items-center`]}>
+  //           <ActivityIndicator size="large" color="#0000ff" />
+  //           <Text>Loading map...</Text>
+  //         </View>
+  //       );
+  //     }
 
-  if (errorMsg) {
-    return <Text>{errorMsg}</Text>;
-  }
+  //   if (errorMsg) {
+  //     return <Text>{errorMsg}</Text>;
+  //   }
+  //   Resolve the issue with seting live location as origin later
+
+  const region = {
+    latitude: origin.location.lat,
+    longitude: origin.location.lng,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+  };
 
   return (
     <MapView
