@@ -74,12 +74,19 @@ const Map = () => {
   //   }
   //   Resolve the issue with seting live location as origin later
 
-  const region = {
-    latitude: origin.location.lat,
-    longitude: origin.location.lng,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-  };
+  const region = origin
+    ? {
+        latitude: origin.location.lat,
+        longitude: origin.location.lng,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      }
+    : {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      };
 
   return (
     <MapView
